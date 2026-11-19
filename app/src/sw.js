@@ -1,6 +1,6 @@
 // Deixa o Vetogoshi funcionar sem internet depois da primeira abertura.
-const V = "vetogoshi-4";
-const ARQ = ["./", "index.html", "vetogoshi.css", "vetogoshi.js", "arte.js", "casa.js", "audio.js", "jogos.js", "manifest.webmanifest", "icone-192.png", "icone-512.png"];
+const V = "vetogoshi-5";
+const ARQ = ["./", "index.html", "vetogoshi.css", "vetogoshi.js", "arte.js", "casa.js", "audio.js", "jogos.js", "versao.js", "atualizacao.js", "manifest.webmanifest", "icone-192.png", "icone-512.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(V).then((c) => c.addAll(ARQ)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== V).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", (e) => {

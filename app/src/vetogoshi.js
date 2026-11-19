@@ -448,7 +448,8 @@ function abrirBichos() {
   const cartao = (b, i) => `<button class="cartao item${i === 0 ? " em-uso" : ""}" data-b="${i}" aria-label="${b.nome}"><span class="prev" data-q="${i}"></span><span class="nome">${b.nome}</span><small class="${i === 0 ? "tem" : ""}">${i === 0 ? "Com você" : "Trocar"}</small></button>`;
   const mais = todos.length < MAX_BICHOS ? `<button class="cartao item mais" data-mais="1" aria-label="Adicionar bichinho"><span class="plus">+</span><span class="nome">Novo bichinho</span></button>` : "";
   const sup = !!NativoAv || "Notification" in window;
-  folha("Seus bichinhos", `<div class="jogos itens">${todos.map(cartao).join("")}${mais}</div>${sup ? `<button class="linha-av" id="btnAvisos" aria-pressed="${!!estado.avisos}">${icone("sino")}<span><strong>Avisos</strong><small>Me avisar quando tiver fome, sede ou sono</small></span><i class="chave"></i></button>` : ""}`, (el) => {
+  folha("Seus bichinhos", `<div class="jogos itens">${todos.map(cartao).join("")}${mais}</div>${sup ? `<button class="linha-av" id="btnAvisos" aria-pressed="${!!estado.avisos}">${icone("sino")}<span><strong>Avisos</strong><small>Me avisar quando tiver fome, sede ou sono</small></span><i class="chave"></i></button>` : ""}<button class="linha-av" id="btnAtu"><span><strong>Procurar atualização</strong><small>Ver se há uma versão nova do jogo</small></span></button>`, (el) => {
+    el.querySelector("#btnAtu").addEventListener("click", () => { fechar(); atuConferir(true); });
     el.querySelectorAll("[data-q]").forEach((m) => { const i = +m.dataset.q, b = todos[i]; m.appendChild(previaPet(b, b.look || {})); });
     el.querySelectorAll("[data-b]").forEach((x) => x.addEventListener("click", () => {
       const i = +x.dataset.b; if (i === 0) return fechar();

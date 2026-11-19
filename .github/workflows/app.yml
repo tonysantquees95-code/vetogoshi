@@ -38,6 +38,8 @@ jobs:
         working-directory: app
       - name: Preparar o projeto Android
         working-directory: app
+        env:
+          VITE_BUILD: ${{ github.run_number }}
         run: |
           npm run build
           npx cap add android
@@ -50,11 +52,15 @@ jobs:
           t = open(m, encoding="utf-8").read()
           # o jogo é só em pé; avisos agendados precisam da permissão de notificação (Android 13+)
           t = t.replace("<activity", '<activity android:screenOrientation="portrait"', 1)
+          if "REQUEST_INSTALL_PACKAGES" not in t:
+              t = t.replace("<application", '    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />\n    <application', 1)
           if "POST_NOTIFICATIONS" not in t:
               t = t.replace("<application", '    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n    <application', 1)
           open(m, "w", encoding="utf-8").write(t)
           # o jogo fica ENTRE a barra de notificações e a de navegação (fixas ou não)
           act = "android/app/src/main/java/tech/vetorial/vetogoshi/MainActivity.java"
+          import shutil
+          shutil.copy("../nativo/src/AtualizadorPlugin.java", "android/app/src/main/java/tech/vetorial/vetogoshi/AtualizadorPlugin.java")
           open(act, "w", encoding="utf-8").write("""package tech.vetorial.vetogoshi;
 
           import android.os.Bundle;
@@ -67,6 +73,7 @@ jobs:
           public class MainActivity extends BridgeActivity {
               @Override
               public void onCreate(Bundle savedInstanceState) {
+                  registerPlugin(AtualizadorPlugin.class);
                   super.onCreate(savedInstanceState);
                   final View conteudo = findViewById(android.R.id.content);
                   ViewCompat.setOnApplyWindowInsetsListener(conteudo, (v, insets) -> {

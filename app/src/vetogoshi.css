@@ -170,3 +170,10 @@ h2{margin:0;font-size:1.15rem}
 .linha-av[aria-pressed=true] .chave{background:#22c55e}.linha-av[aria-pressed=true] .chave::after{left:23px}
 #btnVoltarEsc{margin-top:10px;width:100%}
 .folha.cheio .jogo-wrap:not(:has(.controles)){justify-content:center}
+
+/* janelinha de atualização */
+.atu-txt { margin: 0 0 12px; font-size: 14px; }
+.atu-barra { height: 10px; border-radius: 99px; background: rgba(255,255,255,.12); overflow: hidden; }
+.atu-barra i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--neon, #22d3ee), var(--mag, #e879f9)); transition: width .3s; }
+.atu-est { margin: 8px 0 12px; font-size: 12px; opacity: .8; }
+.atu-bts { display: flex; gap: 10px; flex-wrap: wrap; }
