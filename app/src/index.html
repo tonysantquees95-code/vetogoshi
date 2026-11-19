@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#05070d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Vetogoshi">
+<title>Vetogoshi</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icone-192.png">
+<link rel="apple-touch-icon" href="icone-192.png">
+<link rel="stylesheet" href="vetogoshi.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="ouro" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff59d"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs></svg>
+<main class="app" id="app">
+  <section id="telaJogo" class="tela-jogo" hidden>
+    <div class="cena"><canvas id="cv" aria-label="Seu bichinho"></canvas></div>
+    <header class="hud">
+      <button class="chip-nome" id="btnBichos" aria-label="Seus bichinhos: trocar ou adicionar"><strong id="nomeBicho"></strong><span><span id="faseBicho"></span> <span id="idadeBicho"></span></span><i class="seta-chip" aria-hidden="true"></i></button>
+      <div class="hud-botoes">
+        <button class="mini-btn" id="btnRapido" aria-pressed="false" aria-label="Modo teste: tempo 60 vezes mais rápido"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3 5 14h6l-1 7 8-11h-6z"/></svg></button>
+        <button class="mini-btn" id="btnSom" aria-label="Som ligado ou desligado" aria-pressed="false"></button>
+        <button class="mini-btn" id="btnCemiterio" aria-label="Cemitério"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 21V9a5 5 0 0 1 10 0v12M4 21h16M12 8v6M9.5 10.5h5"/></svg></button>
+      </div>
+    </header>
+    <div class="barras" id="barras"></div>
+    <nav class="salas" id="salas" aria-label="Cômodos e lojinha" hidden></nav>
+    <p class="sr" id="fala" aria-live="polite"></p>
+    <nav class="acoes" id="acoes" aria-label="Ações"></nav>
+  </section>
+
+  <section id="telaEscolher" class="tela-cheia" hidden>
+    <h1 class="marca"><span class="logo-v">V</span>etogoshi</h1>
+    <h2>Escolha o seu bichinho</h2>
+    <div class="especies" id="especies"></div>
+    <label class="campo">Nome
+      <input id="inputNome" maxlength="12" autocomplete="off" placeholder="Dê um nome">
+    </label>
+    <button class="btn-grande" id="btnChocar">Chocar o ovo</button>
+    <button class="btn-res" id="btnVoltarEsc" hidden>Voltar</button>
+  </section>
+
+  <section id="telaTumulo" class="tela-cheia" hidden>
+    <div class="tumulo">
+      <canvas id="cvTumulo" width="192" height="192" aria-label="Lápide"></canvas>
+      <h2 id="tumuloNome"></h2>
+      <p id="tumuloTexto" class="suave"></p>
+    </div>
+    <button class="btn-grande" id="btnNovo">Criar outro bichinho</button>
+  </section>
+</main>
+
+<div class="folha-fundo" id="folhaFundo" hidden>
+  <div class="folha" role="dialog" aria-modal="true" id="folha" aria-label="Janela">
+    <header><h2 id="folhaTitulo"></h2><button class="mini-btn" id="folhaFechar" aria-label="Fechar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></header>
+    <div id="folhaCorpo"></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script src="audio.js"></script>
+<script src="arte.js"></script>
+<script src="casa.js"></script>
+<script src="vetogoshi.js"></script>
+<script src="jogos.js"></script>
+<script>if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register("sw.js").catch(function () {});</script>
+</body>
+</html>
