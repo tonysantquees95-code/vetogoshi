@@ -53,6 +53,31 @@ jobs:
           if "POST_NOTIFICATIONS" not in t:
               t = t.replace("<application", '    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n    <application', 1)
           open(m, "w", encoding="utf-8").write(t)
+          # o jogo fica ENTRE a barra de notificações e a de navegação (fixas ou não)
+          act = "android/app/src/main/java/tech/vetorial/vetogoshi/MainActivity.java"
+          open(act, "w", encoding="utf-8").write("""package tech.vetorial.vetogoshi;
+
+          import android.os.Bundle;
+          import android.view.View;
+          import androidx.core.graphics.Insets;
+          import androidx.core.view.ViewCompat;
+          import androidx.core.view.WindowInsetsCompat;
+          import com.getcapacitor.BridgeActivity;
+
+          public class MainActivity extends BridgeActivity {
+              @Override
+              public void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+                  final View conteudo = findViewById(android.R.id.content);
+                  ViewCompat.setOnApplyWindowInsetsListener(conteudo, (v, insets) -> {
+                      Insets b = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                      v.setPadding(b.left, b.top, b.right, b.bottom);
+                      return WindowInsetsCompat.CONSUMED;
+                  });
+                  ViewCompat.requestApplyInsets(conteudo);
+              }
+          }
+          """)
           PY
           grep -n "screenOrientation\|POST_NOTIFICATIONS" android/app/src/main/AndroidManifest.xml
           npx capacitor-assets generate --android --iconBackgroundColor '#05070D' --iconBackgroundColorDark '#05070D' --splashBackgroundColor '#05070D' --splashBackgroundColorDark '#05070D'
