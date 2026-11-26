@@ -6,6 +6,8 @@ const FASE = [["Ovo", 0], ["Filhote", 3], ["Jovem", 6 * 60], ["Adulto", 24 * 60]
 const OVO_PASSOS = { comer: 2, limpar: 1, carinho: 3 };  // o que o ovo precisa para chocar
 
 let mem = null;
+// texto digitado pela pessoa (nome do bichinho) nunca entra em innerHTML sem passar por aqui
+const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const ler = () => { try { const t = localStorage.getItem(CHAVE) || localStorage.getItem(CHAVE_ANTIGA); if (t) return JSON.parse(t); } catch (e) {} return mem; };
 const gravar = () => { mem = JSON.parse(JSON.stringify(estado)); try { localStorage.setItem(CHAVE, JSON.stringify(estado)); } catch (e) {} };
 const novoEstado = () => ({ moedas: 10, estrelas: 0, itens: [], sala: "quarto", bicho: null, reserva: [], tema: {}, avisos: false, cemiterio: [], rapido: false, som: true, ultimo: Date.now() });
@@ -399,7 +401,7 @@ function mostrarJogo() {
 }
 function cemiterio() {
   const l = estado.cemiterio;
-  folha("Cemitério", l.length ? `<div class="cemit-lista">${[...l].reverse().map((c) => `<div class="cemit-item"><strong>${c.nome}</strong> · ${c.especie}<small>Viveu ${c.idade} · partiu por ${c.causa}</small></div>`).join("")}</div>` : `<p class="suave">Ninguém por aqui. Cuide bem do seu bichinho!</p>`);
+  folha("Cemitério", l.length ? `<div class="cemit-lista">${[...l].reverse().map((c) => `<div class="cemit-item"><strong>${esc(c.nome)}</strong> · ${esc(c.especie)}<small>Viveu ${esc(c.idade)} · partiu por ${esc(c.causa)}</small></div>`).join("")}</div>` : `<p class="suave">Ninguém por aqui. Cuide bem do seu bichinho!</p>`);
 }
 function atualizarSom() { $("#btnSom").innerHTML = icone(estado.som ? "somligado" : "somdesligado"); $("#btnSom").setAttribute("aria-pressed", String(!estado.som)); }
 
@@ -445,7 +447,7 @@ relogio(); mostrarJogo();
 const MAX_BICHOS = 4;
 function abrirBichos() {
   const todos = [estado.bicho, ...estado.reserva].filter(Boolean);
-  const cartao = (b, i) => `<button class="cartao item${i === 0 ? " em-uso" : ""}" data-b="${i}" aria-label="${b.nome}"><span class="prev" data-q="${i}"></span><span class="nome">${b.nome}</span><small class="${i === 0 ? "tem" : ""}">${i === 0 ? "Com você" : "Trocar"}</small></button>`;
+  const cartao = (b, i) => `<button class="cartao item${i === 0 ? " em-uso" : ""}" data-b="${i}" aria-label="${esc(b.nome)}"><span class="prev" data-q="${i}"></span><span class="nome">${esc(b.nome)}</span><small class="${i === 0 ? "tem" : ""}">${i === 0 ? "Com você" : "Trocar"}</small></button>`;
   const mais = todos.length < MAX_BICHOS ? `<button class="cartao item mais" data-mais="1" aria-label="Adicionar bichinho"><span class="plus">+</span><span class="nome">Novo bichinho</span></button>` : "";
   const sup = !!NativoAv || "Notification" in window;
   folha("Seus bichinhos", `<div class="jogos itens">${todos.map(cartao).join("")}${mais}</div>${sup ? `<button class="linha-av" id="btnAvisos" aria-pressed="${!!estado.avisos}">${icone("sino")}<span><strong>Avisos</strong><small>Me avisar quando tiver fome, sede ou sono</small></span><i class="chave"></i></button>` : ""}<button class="linha-av" id="btnAtu"><span><strong>Procurar atualização</strong><small>Ver se há uma versão nova do jogo</small></span></button>`, (el) => {

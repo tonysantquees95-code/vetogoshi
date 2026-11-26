@@ -1,0 +1,4 @@
+[
+  { "regra": "html", "arquivo": "src/vetogoshi.js", "trecho": "", "motivo": "telas montadas só com textos fixos do jogo; o nome digitado passa por esc() e é conferido em seguranca-vetogoshi.test.mjs" },
+  { "regra": "html", "arquivo": "src/jogos.js", "trecho": "", "motivo": "telas dos minijogos só com textos fixos e números; nada digitado pela pessoa entra aqui" }
+]
